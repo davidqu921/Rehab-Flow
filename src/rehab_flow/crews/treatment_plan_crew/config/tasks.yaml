@@ -1,0 +1,67 @@
+# 治疗计划task
+treatment_plan_task:
+  description: >
+    根据诊断结果与相关输入信息，包括
+    - 受众水平：{audience_level}
+    - 诊断结论：{diagnosis_conclusion}
+    - 诊断依据：{diagnosis_basis}
+    - 辅助检查结果：{supplementary_auxiliary_examinations}
+    - 建议的辨证分析：{suggested_diagnostic_dialectics}
+    你的任务是制定详细专业的康复治疗方案与计划。  
+    方案应包含：  
+    1. 康复干预的总体路径（如物理治疗、药物治疗、心理支持等）  
+    2. 阶段性目标（短期、中期、长期）  
+    3. 每日/每周的执行日程安排  
+    4. 监测与随访计划  
+    5. 注意事项及可选替代方案  
+  expected_output: >
+    一份JSON格式结构化的康复治疗方案，便于直接交付给患者或医护团队。
+    确保格式如下：
+    {
+      "康复干预总体路径": {
+        "物理治疗": "可以分早中后三期",
+        "药物治疗": "推荐的药物疗法",
+        "心理支持": "例如疼痛管理教育，包括呼吸放松和认知行为疗法",
+        "辅助器具": "如石膏固定和支具使用..."
+      },
+      "阶段性目标":"可以分短期中期和长期目标",
+      "执行日程安排": "可以从每日安排到每周阶段性计划",
+      "监测与随访计划": "包括定期复查，症状监测和随访安排",
+      "注意事项及可选替代方案": "给出切实的注意事项和针对病人情况的备选替代方案"
+    }
+    Ensure the final output does not include any code block markers like ```json or ```python.
+  agent: treatment_plan_agent
+
+# 质量管控task
+plan_quality_control_task:
+  description: >
+    审校由康复治疗方案制定专家提供的治疗计划，结合患者的个人情况
+    - 现病史：{history_of_present_illness}
+    - 既往病史：{past_medical_history}
+    - 过敏史:{allergy_history}
+    - 家族遗传史:{family_history}
+    - 患者个人情况：{personal_history}
+    你的任务是优化康复方案，尽可能减少副作用与风险。  
+    审校内容包括：  
+    1. 诊断逻辑是否合理  
+    2. 治疗建议是否科学、基于循证医学  
+    3. 计划执行的可行性  
+    4. 文献引用的准确性与可靠性  
+    5. 是否存在可以优化的地方  
+  expected_output: >
+    一份修改后的高质量JSON格式结构化的康复治疗方案，便于直接交付给患者或医护团队。
+    确保格式如下：
+    {
+      "康复干预总体路径": {
+        "物理治疗": "可以分早中后三期",
+        "药物治疗": "推荐的药物疗法",
+        "心理支持": "例如疼痛管理教育，包括呼吸放松和认知行为疗法",
+        "辅助器具": "如石膏固定和支具使用..."
+      },
+      "阶段性目标":"可以分短期中期和长期目标",
+      "执行日程安排": "可以从每日安排到每周阶段性计划",
+      "监测与随访计划": "包括定期复查，症状监测和随访安排",
+      "注意事项及可选替代方案": "给出切实的注意事项和针对病人情况的备选替代方案"
+    }
+    Ensure the final output does not include any code block markers like ```json or ```python.
+  agent: quality_control_agent

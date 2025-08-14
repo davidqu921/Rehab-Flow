@@ -1,0 +1,27 @@
+# 报告总结task
+report_summary_task:
+  description: >
+    根据以下提供的多智能体诊疗过程信息，生成一份逻辑清晰、分层结构化的完整诊断与治疗总结报告。
+    输入包括：
+    - 报告受众的专业水平（病人，专业人士，定级专家）：{audience_level}
+    - 现病史：{history_of_present_illness}
+    - 既往病史：{past_medical_history}
+    - 过敏史：{allergy_history}
+    - 家族遗传史：{family_history}
+    - 个人生活史：{personal_history}
+    - 体格检查结果：{physical_examination}
+    - 辅助检查结果：{auxiliary_examination}
+    - 补充问诊信息：{supplementary_inquiries}
+    - 建议的辩证分析（多智能体讨论输出）：{suggested_diagnostic_dialectics}
+    - 补充的辅助检查结果：{supplementary_auxiliary_examinations}
+    - 已完成的诊断阶段信息：{complete_sections}
+    - 最终诊断结果：{diagnosis_result}
+    - 康复治疗计划：{treatment_plan}
+    请综合上述信息，按照“初诊信息 → 补充问诊与诊断辨证 → 最终诊断结果 → 康复治疗计划 → 多智能体协作优势总结”的结构，
+    梳理各阶段的输入、分析、参与的智能体角色及其贡献，凸显多智能体协作在准确性、个性化和科学性方面的优势。
+    输出应为适合目标受众阅读的医学报告，并且符合 Markdown 格式分层展示的规范。
+  expected_output: >
+    一份 Markdown 格式的完整诊疗总结报告，分层清晰，包含各阶段的内容与多智能体协作亮点。
+    确保最终输出不包含任何代码块标记（例如 ```json 或 ```python），
+    内容应便于直接展示给目标受众。
+  agent: report_summary_agent

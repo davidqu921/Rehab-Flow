@@ -1,0 +1,34 @@
+# 排除存疑疾病task
+possibilities_elimination_task:
+  description: >
+    根据患者和门诊医生提供的一手诊断信息和辅助检查报告，全面了解其症状、病史及康复相关背景信息，并据此进行病理分析，排除不符合康复科诊断标准的疾病可能性。
+    诊断结果包括（为空时忽略即可）：
+    - 当前诊断结论：{diagnosis_conclusion}
+    - 当前诊断依据：{diagnosis_basis}
+    - 其他可能的诊断：{other_diagnosis_possibility}
+    - 诊断中的问答：{suggested_question_and_answer}
+    - 额外完成的辅助检查及结果：{suggested_auxiliary_check_and_result}
+    目标受众：{audience_level}级学习者，请结合受众水平进行内容的专业性和易懂性调整。
+    
+    你的任务是：
+    1. 通过分析患者的当前"诊断结论"，"诊断依据"，"诊断中的问答"，"额外完成的辅助检查及结果"来排除所有的"其他可能的诊断"。
+    2. "当前诊断结论"也有可能会被排除，被某个"其他可能的诊断"取代。
+    3. 如果"当前诊断结论"仍不明确或需要进一步确认，请提出需要进一步追问的症状或建议进行的辅助检查。
+    4. 如果"当前诊断结论"已经非常明确，最后给出一个结论性的确诊。
+    
+  expected_output: >
+    Ensure your final answer contains only the content in the following format:
+    {
+      "diagnosis_conclusion": "更新的诊断结论",
+      "diagnosis_basis": "更新的诊断依据",
+      "other_diagnosis_possibility": ["需要进一步排除的其他可能的诊断1","需要进一步排除的其他可能的诊断2",...],
+      "suggested_question": "需要进一步追问的症状",
+      "suggested_auxiliary_check": ["额外需要的辅助检查1", "额外需要的辅助检查2", ...],
+      "further_inquiries_needed": "是否需要进一步追问症状或建议进行的辅助检查, 只回答 yes/no"
+    }
+
+    注意：在确定没有其他可能性时"other_diagnosis_possibility"应该为空list，"suggested_question"也应该为空str，
+    "suggested_auxiliary_check"也应该为空list，"further_inquiries_needed"应该回答 "no"，并给出最终确诊结论和确诊依据。
+
+    Ensure the final output does not include any code block markers like ```json or ```python.
+  agent: possibilities_elimination_agent

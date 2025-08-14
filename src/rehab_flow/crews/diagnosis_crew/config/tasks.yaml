@@ -1,0 +1,115 @@
+# 诊断
+diagnosis_task:
+  description: >
+    根据问诊信息分析可能的康复相关诊断结果，结合调用自身的RAG模型查询医学知识和指南进行推理判断。
+    问诊信息包括：
+    - 主诉：{main_complain}
+    - 现病史：{history_of_present_illness}
+    - 既往史：{past_medical_history}
+    - 已经做过的辅助检查：{auxiliary_examination}
+    - 其他补充问诊信息：{supplementary_inquiries}
+    - 
+    目标受众：{audience_level}级学习者，请结合受众水平进行内容的专业性和易懂性调整。
+    你的任务是：
+    1. 分析主诉和现病史，识别可能的功能障碍或病理状态
+    2. 结合既往史和辅助检查结果，确定可能的诊断结论和依据
+    3. 如果存在多个诊断可能性，列出所有可能性及其依据
+    4. 提出需要进一步追问的症状或建议进行的辅助检查
+    如果存在多个诊断可能性，列出现阶段的全部可能性，最后根据返回结果给出需要追问的症状或建议进行的辅助检查（CT图像，验血验尿，MRI核磁共振，EMG肌电图等）。
+  expected_output: >
+    Ensure your final answer contains only the content in the following format: 
+    {
+        "diagnosis_conclusion": "Diagnosis conclusion text",
+        "diagnosis_basis": "Diagnosis basis text",
+        "audience_level": "{audience_level}",
+        "other_diagnosis_possibility": [
+          {
+              "possibility_1": "Description of the first possibility",
+              "basis": "Basis for the first possibility",
+              "differential_points": "Differential points for the first possibility, score out of 10",
+          },
+          ...
+        ],
+        "suggested_question": "questions to eliminate other possibilities",
+        "suggested_auxiliary_check": "recommended auxiliary checks"
+    }
+    注意：在确定没有其他可能性时"other_diagnosis_possibility"应该为空，"suggested_question"也应该为空，
+    "suggested_auxiliary_check"也应该为空。
+
+    Ensure the final output does not include any code block markers like ```json or ```python.
+  agent: diagnosis_agent
+
+# 辅助检查
+auxiliary_examination_task:
+  description: >
+    根据诊断结果和患者信息，建议必要的辅助检查项目。
+    目标受众：{audience_level}级学习者，请结合受众水平进行内容的专业性和易懂性调整。
+    你的任务是：
+    1. 根据诊断结论和依据，判断需要进行哪些辅助检查
+    2. 如果诊断结论不明确，建议进一步的辅助检查项目
+    3. 确保建议的检查项目符合康复科诊断标准
+  expected_output: >
+    Ensure your final answer contains only the content in the following format:
+    {
+        "diagnosis_conclusion": "Diagnosis conclusion text",
+        "diagnosis_basis": "Diagnosis basis text",
+        "audience_level": "{audience_level}",
+        "other_diagnosis_possibility": [
+          {
+              "possibility": "Description of the first possibility",
+              "basis": "Basis for the first possibility",
+              "differential_points": "Differential points for the first possibility, score out of 10",
+          },
+          ...
+        ],
+        "suggested_question": "questions to eliminate other possibilities",
+        "suggested_auxiliary_examinations": [
+            {
+                "examination_name": "Name of the auxiliary examination",
+                "examination_reason": "Reason for the examination",
+                "examination_priority": "Priority level of the examination (high, medium, low)"
+            },
+            ...
+        ]
+    }
+    注意：在确定没有其他可能性时"other_diagnosis_possibility"应该为空，"suggested_question"也应该为空，
+    "suggested_auxiliary_examinations"也应该为空。尽量保持"suggested_auxiliary_examinations"和病人主诉的
+    相关性，不要建议无关的检查。
+    Ensure the final output does not include any code block markers like ```json or ```python.
+  agent: auxiliary_examination_agent
+
+# 质控校对
+diagnosis_quality_control_task:
+  description: >
+    对诊断环节的内容进行审校，确保信息完整、准确，并符合康复科诊断标准。
+    目标受众：{audience_level}级学习者，请结合受众水平进行内容的专业性和易懂性调整。
+    你的任务是：
+    1. 检查诊断结论和依据是否完整、准确
+    2. 确认其他可能的诊断是否合理
+    3. 审核建议追问的症状和辅助检查是否符合康复科标准
+    4. 提出改进建议，确保信息为后续治疗和康复提供可靠基础
+  expected_output: >
+    Ensure your final answer contains only the content in the following format:
+    {
+        "diagnosis_conclusion": "Diagnosis conclusion text",
+        "diagnosis_basis": "Diagnosis basis text",
+        "audience_level": "{audience_level}",
+        "other_diagnosis_possibility": [
+          {
+              "possibility_1": "Description of the first possibility",
+              "basis": "Basis for the first possibility",
+              "differential_points": "Differential points for the first possibility, score out of 10",
+          },
+          ...
+        ],
+        "suggested_question": "questions to eliminate other possibilities",
+        "suggested_auxiliary_check": ["recommended auxiliary check 1", "recommended auxiliary checks 2",...],
+        "quality_control_feedback": "Feedback on the quality control review"
+    }
+    注意：在确定没有其他可能性时"other_diagnosis_possibility"应该为空list，"suggested_question"也应该为空str，
+    "suggested_auxiliary_check"也应该为空list，"quality_control_feedback"应该包含对以上诊断依据，内容，流程的客观的评价。
+    尽量保持"suggested_auxiliary_examinations"和病人主诉的相关性，不要建议无关的检查。
+    
+    Ensure the final output does not include any code block markers like ```json or ```python. 用中文回答。
+  agent: diagnosis_quality_control_agent
+

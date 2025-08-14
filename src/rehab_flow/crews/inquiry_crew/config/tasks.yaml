@@ -1,0 +1,18 @@
+# 问诊
+inquiry_task:
+  description: >
+    与患者进行初步沟通，采集主诉、症状表现、发病时间、病史等信息。
+    如果发现关键信息缺失（如疼痛部位、持续时间、伴随症状、影响功能）、描述模糊或矛盾之处，
+    请主动提出补充提问并等待用户进一步输入。
+  expected_output: >
+    一份结构化的问诊信息报告，包含主诉、现病史、既往史、伴随症状等内容。
+  agent: inquiry_agent
+
+# 质控
+inquiry_quality_control_task:
+  description: >
+    审核问诊信息报告，确保内容完整、准确，并符合康复科问诊标准。
+    如果发现信息缺失、错误或不符合规范之处，请提出修改建议并等待用户确认。
+  expected_output: >
+    一份经过质控的问诊信息报告，包含审核意见和修改建议（如有）。
+  agent: inquiry_quality_control_agent
