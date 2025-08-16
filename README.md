@@ -1,7 +1,5 @@
 # 🏥 Multi-Agent Collaborative Rehabilitation Outpatient Assistance System - *Rehab-Flow*
 
-![Uploading Rehab-Flow文字logo.jpg…]()
-
 
 > **Disclaimer**: While this AI system demonstrates impressive diagnostic capabilities, it's designed to assist healthcare professionals, not replace your favorite doctor (they still need to pay their student loans! 😄)
 
